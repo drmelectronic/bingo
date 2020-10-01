@@ -3,6 +3,8 @@ import random
 
 from fpdf import FPDF
 
+FOLDER = 'fallguys'
+
 
 class Bingo(FPDF):
 
@@ -17,24 +19,26 @@ class Bingo(FPDF):
         # self.line(205, 5, 205, 292)
 
         self.set_xy(0, 22)
-        self.image('template.png', w=200, h=250)
+        self.image(f'{FOLDER}/template.png', w=200, h=250)
 
         self.set_font('Arial', 'B', 50)
-        self.set_text_color(100, 100, 100)
+        self.set_text_color(255, 255, 255)
         x = 23.5
         for i in range(5):
-            y = 98
+            y = 99
             for j in range(5):
                 number = game.columnas[j][i]
                 if number is not None:
-                    if number < 10:
-                        self.text(x + 5, y, str(number))
-                    else:
-                        self.text(x, y, str(number))
-                y += 37
+                    self.set_xy(x - 8, y - 24)
+                    self.image(f'{FOLDER}/ORIGINAL/{number}.png', w=34, h=34)
+                    # if number < 10:
+                    #     self.text(x + 5, y, str(number))
+                    # else:
+                    #     self.text(x, y, str(number))
+                y += 36.8
             x += 34.7
         self.set_font('Arial', 'B', 20)
-        self.text(30, 280, game.gamer)
+        self.text(30, 265, game.gamer)
 
 
 class Game:
@@ -57,6 +61,7 @@ class Game:
         self.gamer = gamer
 
     def new_number(self, col):
+        # return 1
         min_limit = 1 + col * 10
         max_limit = 10 + col * 10
         number = random.randint(min_limit, max_limit)
@@ -77,14 +82,12 @@ class Game:
 if __name__ == '__main__':
     games = []
 
-    niños = [
-        'Jesús',
-        'André',
-        'Akira',
-        '01', '02', '03'
-    ]
+    niños = []
+    for i in range(20):
+        niños.append('T' + str(i + 1).zfill(2))
 
     while len(niños):
+        print('Creando juego')
         game = Game()
         repetido = False
         for g in games:
@@ -98,7 +101,7 @@ if __name__ == '__main__':
         pdf = Bingo()
         pdf.create_page(g)
         js[g.gamer] = g.numbers
-        pdf.output(f'{g.gamer}.pdf', 'F')
-    backup = open('juego.bkp', 'w')
+        pdf.output(f'{FOLDER}/tarjetas/{g.gamer}.pdf', 'F')
+    backup = open(f'{FOLDER}/juego.bkp', 'w')
     backup.write(json.dumps(js, indent=4))
     backup.close()
