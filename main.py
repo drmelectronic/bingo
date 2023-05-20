@@ -3,7 +3,8 @@ import random
 
 from fpdf import FPDF
 
-FOLDER = 'fallguys'
+FOLDER = 'minecraft'
+MAX_LIMIT = 75
 
 
 class Bingo(FPDF):
@@ -12,6 +13,7 @@ class Bingo(FPDF):
         super().__init__()
 
     def create_page(self, game):
+        print('Creando pdf', g.gamer)
         self.add_page()
         # self.line(5, 5, 205, 5)
         # self.line(5, 292, 205, 292)
@@ -19,26 +21,28 @@ class Bingo(FPDF):
         # self.line(205, 5, 205, 292)
 
         self.set_xy(0, 22)
-        self.image(f'{FOLDER}/template.png', w=200, h=250)
+        self.image(f'{FOLDER}/template.png', w=200, x=5, y=25)
 
         self.set_font('Arial', 'B', 50)
         self.set_text_color(255, 255, 255)
-        x = 23.5
+        x = 27.5
         for i in range(5):
-            y = 99
+            y = 102
             for j in range(5):
                 number = game.columnas[j][i]
                 if number is not None:
                     self.set_xy(x - 8, y - 24)
-                    self.image(f'{FOLDER}/ORIGINAL/{number}.png', w=34, h=34)
+                    self.image(f'{FOLDER}/100PNG/{number}.png', w=30, h=30)
                     # if number < 10:
                     #     self.text(x + 5, y, str(number))
                     # else:
                     #     self.text(x, y, str(number))
-                y += 36.8
-            x += 34.7
+                y += 36.35
+            x += 35.5
+        # self.set_text_color(40, 40, 40)  # black
+        self.set_text_color(200, 200, 200)  # white
         self.set_font('Arial', 'B', 20)
-        self.text(30, 265, game.gamer)
+        self.text(20, 272, game.gamer)
 
 
 class Game:
@@ -62,8 +66,9 @@ class Game:
 
     def new_number(self, col):
         # return 1
-        min_limit = 1 + col * 10
-        max_limit = 10 + col * 10
+        per_column = MAX_LIMIT / 5
+        min_limit = 1 + col * per_column
+        max_limit = per_column + col * per_column
         number = random.randint(min_limit, max_limit)
         while number in self.numbers:
             number = random.randint(min_limit, max_limit)
@@ -82,12 +87,40 @@ class Game:
 if __name__ == '__main__':
     games = []
 
-    niños = []
-    for i in range(20):
-        niños.append('T' + str(i + 1).zfill(2))
-
+    niños = [
+        'Joe A.',
+        'Guadalupe',
+        'Joe H.',
+        'Roxana',
+        'Robert',
+        'Geraldine',
+        'Loana',
+        'Dámaris',
+        'Esteban',
+        'Ronald',
+        'Meddly',
+        'David',
+        'Josué',
+        'Tim',
+        'Camila',
+        'Abigail',
+        'Christian',
+        'Carmen',
+        'Luis Alonso',
+        'Ricardo',
+        'Giuliana',
+        'Cayetana',
+        'Francesca',
+        'Santiago',
+        'Jossmel',
+        'Jugador 1',
+        'Jugador 2',
+        'Jugador 3',
+        'Jugador 4',
+        'Jugador 5',
+        'Jugador 6'
+    ]
     while len(niños):
-        print('Creando juego')
         game = Game()
         repetido = False
         for g in games:
@@ -101,7 +134,7 @@ if __name__ == '__main__':
         pdf = Bingo()
         pdf.create_page(g)
         js[g.gamer] = g.numbers
-        pdf.output(f'{FOLDER}/tarjetas/{g.gamer}.pdf', 'F')
-    backup = open(f'{FOLDER}/juego.bkp', 'w')
+        pdf.output(f'resultado/tarjetas/{g.gamer}.pdf', 'F')
+    backup = open(f'resultado/juego.bkp', 'w')
     backup.write(json.dumps(js, indent=4))
     backup.close()

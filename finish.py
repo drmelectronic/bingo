@@ -1,3 +1,4 @@
+import configparser
 import json
 import os
 import random
@@ -6,13 +7,19 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 import pygame
 
-FOLDER = 'fallguys'
+FOLDER = 'minecraft'
+
+CONFIG = configparser.ConfigParser()
+CONFIG.read(FOLDER + '/config.ini')
 
 FPS = 15
 # DISPLAY = pygame.display.set_mode((1900, 1080), pygame.FULLSCREEN)
 DISPLAY = pygame.display.set_mode((1900, 1060))
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+MAX_LIMIT = 75
+
+J = [0, 1, 2, 3, 4, 7, 16, 19, 20, 21]
 
 
 class Game:
@@ -21,7 +28,9 @@ class Game:
         self.gamer = gamer
         self.numbers = numbers
         self.finded = []
+        self.indices = []
         self.faltan = list(self.numbers)
+        self.faltan_J = list(map(lambda x: self.numbers[x], J))
 
     def check(self, numbers):
         self.finded = []
@@ -34,6 +43,9 @@ class Game:
         if n in self.numbers:
             self.finded.append(n)
             self.faltan.remove(n)
+            self.indices.append(self.numbers.index(n))
+        if n in self.faltan_J:
+            self.faltan_J.remove(n)
         return len(self.finded)
 
     def remove_number(self, n):
@@ -42,28 +54,40 @@ class Game:
         return len(self.finded)
 
     def status(self):
+        # faltan_list = self.faltan_J
+        faltan_list = self.faltan
         nombre = (self.gamer + '                    ')[:20]
-        faltan = ', '.join(str(x) for x in self.faltan[:4])
-        if len(faltan) > 4:
+        faltan = ', '.join(str(x) for x in faltan_list[:4])
+        if len(faltan_list) > 4:
             faltan += ', +'
-        return f'{nombre}: {len(self.finded)}    Faltan: {faltan}'
+        if len(faltan_list) > 0:
+            return f'{nombre}: {len(self.finded)}    Faltan: {faltan}'
+        else:
+            return f'{nombre}: {len(self.finded)}    GANO'
+
+    def check_J(self):
+        for i in J:
+            if i not in self.indices:
+                return False
+        return True
 
 
 class Screen:
 
     def __init__(self):
+        self.background = json.loads(CONFIG['STYLES']['background'])
         self.opciones = []
-        for i in range(50):
+        for i in range(MAX_LIMIT):
             self.opciones.append(i + 1)
         pygame.init()
         logo = pygame.image.load(os.path.join(f'{FOLDER}/logo.png'))
         pygame.display.set_icon(logo)
-        pygame.display.set_caption("Fall Guys Memory")
+        pygame.display.set_caption("Bingo")
         self.imagen_grande = None
-        self.escoger_button = Button(300, 900, 320, 80, 'ESCOGER', color=(255, 255, 100), size=50)
+        self.escoger_button = Button(200, 900, 320, 80, 'Nuevo', color=(9, 156, 67), size=50)
         self.escoger_button.set_callback(self.escoger)
         self.seleccionados = []
-        backup = open(f'{FOLDER}/juego.bkp', 'r')
+        backup = open(f'resultado/juego.bkp', 'r')
         js = json.loads(backup.read())
         backup.close()
         self.games = []
@@ -75,13 +99,14 @@ class Screen:
         choice = random.choice(self.opciones)
         index = self.opciones.index(choice)
         self.opciones.pop(index)
+        print(os.path.join(f'{FOLDER}/100PNG/{choice}.png'))
         self.seleccionado(choice)
         imagen = pygame.image.load(os.path.join(f'{FOLDER}/100PNG/{choice}.png'))
         self.seleccionados.append(imagen)
         for g in self.games:
             g.check_number(choice)
         print('\n\n')
-        for g in sorted(self.games, key=lambda x: -len(x.finded)):
+        for g in sorted(self.games, key=lambda x: len(x.finded)):
             print(g.status())
 
     def seleccionado(self, number):
@@ -89,17 +114,29 @@ class Screen:
 
     def display(self):
         self.process_events()
-        DISPLAY.fill((190, 101, 154))
+        # DISPLAY.fill(self.background)
+        imagen = pygame.image.load(os.path.join(f'{FOLDER}/background.png'))
+        background = pygame.transform.scale(imagen, (1900, 1060))
+        DISPLAY.blit(background, (0, 0))
+
+        imagen = pygame.image.load(os.path.join(f'{FOLDER}/panel.png'))
+        background = pygame.transform.scale(imagen, (620, 620))
+        DISPLAY.blit(background, (60, 220))
+
+        imagen = pygame.image.load(os.path.join(f'{FOLDER}/header.png'))
+        background = pygame.transform.scale(imagen, (668, 258))
+        DISPLAY.blit(background, (20, 20))
         if self.imagen_grande:
-            DISPLAY.blit(self.imagen_grande, (50, 50))
-        x = 900
-        y = 50
+            picture = pygame.transform.scale(self.imagen_grande, (500, 500))
+            DISPLAY.blit(picture, (120, 280))
+        x = 720
+        y = 20
         for s in self.seleccionados:
             DISPLAY.blit(s, (x, y))
-            x += 120
+            x += 110
             if x > 1800:
-                y += 120
-                x = 900
+                y += 110
+                x = 720
 
         self.escoger_button.display()
         pygame.display.flip()
@@ -120,8 +157,8 @@ class Button:
         self.X = 0
         self.Y = 0
         self.args = []
-        self.color_font = BLACK
-        self.font = pygame.font.SysFont("Arial", size)
+        self.color_font = WHITE
+        self.font = pygame.font.SysFont("Minecrafter", size)
         self.is_clicked = False
         self.x = x
         self.y = y
@@ -158,7 +195,7 @@ class Button:
         self.Y = self.y - height / 2 + self.h / 2
 
     def display(self):
-        pygame.draw.rect(DISPLAY, self.color, self.rectangulo)
+        pygame.draw.rect(DISPLAY, self.color, self.rectangulo, border_radius=20)
         DISPLAY.blit(self.text, (self.X, self.Y))
 
     def check_click(self, pos):
