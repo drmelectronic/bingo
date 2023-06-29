@@ -3,7 +3,7 @@ import random
 
 from fpdf import FPDF
 
-FOLDER = 'minecraft'
+FOLDER = 'babyshower'
 MAX_LIMIT = 75
 
 
@@ -86,7 +86,6 @@ class Game:
 
 if __name__ == '__main__':
     games = []
-
     niños = [
         'Joe A.',
         'Guadalupe',
@@ -99,26 +98,35 @@ if __name__ == '__main__':
         'Esteban',
         'Ronald',
         'Meddly',
+        'Mimba',
         'David',
         'Josué',
-        'Tim',
-        'Camila',
-        'Abigail',
         'Christian',
         'Carmen',
         'Luis Alonso',
-        'Ricardo',
-        'Giuliana',
-        'Cayetana',
         'Francesca',
         'Santiago',
-        'Jossmel',
-        'Jugador 1',
-        'Jugador 2',
+        'Aide',
+        'Rosa',
+        'Francisco',
+        'Marlene',
+        'Claudia',
+        'Jugador 1',  # Polito
+        'Jugador 2',  # Lupe
         'Jugador 3',
         'Jugador 4',
         'Jugador 5',
-        'Jugador 6'
+        'Jugador 6',
+        'Jugador 7',
+        'Jugador 8',
+        'Jugador 9',
+        'Jugador 10',
+        'Jugador 11',
+        'Jugador 12',
+        'Jugador 13',
+        'Jugador 14',
+        'Jugador 15',
+        'Jugador 16',
     ]
     while len(niños):
         game = Game()

@@ -7,7 +7,7 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 import pygame
 
-FOLDER = 'minecraft'
+FOLDER = 'babyshower'
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read(FOLDER + '/config.ini')
@@ -84,7 +84,7 @@ class Screen:
         pygame.display.set_icon(logo)
         pygame.display.set_caption("Bingo")
         self.imagen_grande = None
-        self.escoger_button = Button(200, 900, 320, 80, 'Nuevo', color=(9, 156, 67), size=50)
+        self.escoger_button = Button(200, 900, 320, 80, 'Nuevo', color=(190, 144, 87), size=50)
         self.escoger_button.set_callback(self.escoger)
         self.seleccionados = []
         backup = open(f'resultado/juego.bkp', 'r')
@@ -124,7 +124,7 @@ class Screen:
         DISPLAY.blit(background, (60, 220))
 
         imagen = pygame.image.load(os.path.join(f'{FOLDER}/header.png'))
-        background = pygame.transform.scale(imagen, (668, 258))
+        background = pygame.transform.scale(imagen, (668, 200))
         DISPLAY.blit(background, (20, 20))
         if self.imagen_grande:
             picture = pygame.transform.scale(self.imagen_grande, (500, 500))
@@ -158,7 +158,7 @@ class Button:
         self.Y = 0
         self.args = []
         self.color_font = WHITE
-        self.font = pygame.font.SysFont("Minecrafter", size)
+        self.font = pygame.font.SysFont("Akaya Kanadaka", size)
         self.is_clicked = False
         self.x = x
         self.y = y
