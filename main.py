@@ -3,8 +3,8 @@ import random
 
 from fpdf import FPDF
 
-FOLDER = 'babyshower'
-MAX_LIMIT = 75
+FOLDER = 'geometrydash'
+MAX_LIMIT = 100
 
 
 class Bingo(FPDF):
@@ -67,8 +67,8 @@ class Game:
     def new_number(self, col):
         # return 1
         per_column = MAX_LIMIT / 5
-        min_limit = 1 + col * per_column
-        max_limit = per_column + col * per_column
+        min_limit = int(1 + col * per_column)
+        max_limit = int(per_column + col * per_column)
         number = random.randint(min_limit, max_limit)
         while number in self.numbers:
             number = random.randint(min_limit, max_limit)
@@ -94,7 +94,7 @@ if __name__ == '__main__':
         'Robert',
         'Geraldine',
         'Loana',
-        'Dámaris',
+        'Damaris',
         'Esteban',
         'Ronald',
         'Meddly',
@@ -106,27 +106,17 @@ if __name__ == '__main__':
         'Luis Alonso',
         'Francesca',
         'Santiago',
-        'Aide',
         'Rosa',
         'Francisco',
-        'Marlene',
-        'Claudia',
-        'Jugador 1',  # Polito
-        'Jugador 2',  # Lupe
+        'Polito',
+        'Lupe',
+        'Tim',
+        'Camila',
+        'Abigail',
+        'Jugador 1',
+        'Jugador 2',
         'Jugador 3',
-        'Jugador 4',
-        'Jugador 5',
-        'Jugador 6',
-        'Jugador 7',
-        'Jugador 8',
-        'Jugador 9',
-        'Jugador 10',
-        'Jugador 11',
-        'Jugador 12',
-        'Jugador 13',
-        'Jugador 14',
-        'Jugador 15',
-        'Jugador 16',
+        'Jugador 4'
     ]
     while len(niños):
         game = Game()
@@ -142,7 +132,7 @@ if __name__ == '__main__':
         pdf = Bingo()
         pdf.create_page(g)
         js[g.gamer] = g.numbers
-        pdf.output(f'resultado/tarjetas/{g.gamer}.pdf', 'F')
+        pdf.output(f'resultado/tarjetas/{g.gamer}.pdf')
     backup = open(f'resultado/juego.bkp', 'w')
     backup.write(json.dumps(js, indent=4))
     backup.close()

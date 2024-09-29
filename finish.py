@@ -7,7 +7,7 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 import pygame
 
-FOLDER = 'babyshower'
+FOLDER = 'geometrydash'
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read(FOLDER + '/config.ini')
@@ -17,7 +17,7 @@ FPS = 15
 DISPLAY = pygame.display.set_mode((1900, 1060))
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-MAX_LIMIT = 75
+MAX_LIMIT = 100
 
 J = [0, 1, 2, 3, 4, 7, 16, 19, 20, 21]
 
@@ -84,7 +84,7 @@ class Screen:
         pygame.display.set_icon(logo)
         pygame.display.set_caption("Bingo")
         self.imagen_grande = None
-        self.escoger_button = Button(200, 900, 320, 80, 'Nuevo', color=(190, 144, 87), size=50)
+        self.escoger_button = Button(200, 900, 320, 80, 'Nuevo', color=json.loads(CONFIG['STYLES']['button']), size=50)
         self.escoger_button.set_callback(self.escoger)
         self.seleccionados = []
         backup = open(f'resultado/juego.bkp', 'r')
@@ -158,7 +158,7 @@ class Button:
         self.Y = 0
         self.args = []
         self.color_font = WHITE
-        self.font = pygame.font.SysFont("Akaya Kanadaka", size)
+        self.font = pygame.font.SysFont(CONFIG['STYLES']['font'], size)
         self.is_clicked = False
         self.x = x
         self.y = y
