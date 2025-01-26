@@ -7,7 +7,7 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 import pygame
 
-FOLDER = 'geometrydash'
+FOLDER = 'operacion12dc'
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read(FOLDER + '/config.ini')
@@ -17,7 +17,7 @@ FPS = 15
 DISPLAY = pygame.display.set_mode((1900, 1060))
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-MAX_LIMIT = 100
+MAX_LIMIT = 90
 
 J = [0, 1, 2, 3, 4, 7, 16, 19, 20, 21]
 
