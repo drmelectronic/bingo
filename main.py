@@ -3,8 +3,8 @@ import random
 
 from fpdf import FPDF
 
-FOLDER = 'geometrydash'
-MAX_LIMIT = 100
+FOLDER = 'aniversario'
+MAX_LIMIT = 90
 
 
 class Bingo(FPDF):
@@ -40,9 +40,9 @@ class Bingo(FPDF):
                 y += 36.35
             x += 35.5
         # self.set_text_color(40, 40, 40)  # black
-        self.set_text_color(200, 200, 200)  # white
+        self.set_text_color(40, 40, 40)  # white
         self.set_font('Arial', 'B', 20)
-        self.text(20, 272, game.gamer)
+        self.text(20, 268, 'Jugador: ' + game.gamer)
 
 
 class Game:
@@ -86,38 +86,40 @@ class Game:
 
 if __name__ == '__main__':
     games = []
-    niños = [
-        'Joe A.',
-        'Guadalupe',
-        'Joe H.',
-        'Roxana',
-        'Robert',
-        'Geraldine',
-        'Loana',
-        'Damaris',
-        'Esteban',
-        'Ronald',
-        'Meddly',
-        'Mimba',
-        'David',
-        'Josué',
-        'Christian',
-        'Carmen',
-        'Luis Alonso',
-        'Francesca',
-        'Santiago',
-        'Rosa',
-        'Francisco',
-        'Polito',
-        'Lupe',
-        'Tim',
-        'Camila',
-        'Abigail',
-        'Jugador 1',
-        'Jugador 2',
-        'Jugador 3',
-        'Jugador 4'
-    ]
+    # niños = [
+        # 'Joe A.',
+        # 'Guadalupe',
+        # 'Joe H.',
+        # 'Roxana',
+        # 'Robert',
+        # 'Geraldine',
+        # 'Loana',
+        # 'Damaris',
+        # 'Esteban',
+        # 'Ronald',
+        # 'Meddly',
+        # 'Mimba',
+        # 'David',
+        # 'Josué',
+        # 'Christian',
+        # 'Carmen',
+        # 'Luis Alonso',
+        # 'Francesca',
+        # 'Santiago',
+        # 'Rosa',
+        # 'Francisco',
+        # 'Polito',
+        # 'Lupe',
+        # 'Tim',
+        # 'Camila',
+        # 'Abigail',
+        # 'Jugador 1',
+        # 'Jugador 2',
+        # 'Jugador 3',
+        # 'Jugador 4'
+    # ]
+    niños = [str(i).zfill(2) for i in range(1, 41)]
+
     while len(niños):
         game = Game()
         repetido = False
