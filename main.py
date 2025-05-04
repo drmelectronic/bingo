@@ -3,7 +3,7 @@ import random
 
 from fpdf import FPDF
 
-FOLDER = 'aniversario'
+FOLDER = 'operacion12dc'
 MAX_LIMIT = 90
 
 
