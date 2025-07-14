@@ -7,7 +7,7 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 import pygame
 
-FOLDER = 'operacion12dc'
+FOLDER = 'blippi'
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read(FOLDER + '/config.ini')
@@ -20,6 +20,9 @@ WHITE = (255, 255, 255)
 MAX_LIMIT = 90
 
 J = [0, 1, 2, 3, 4, 7, 16, 19, 20, 21]
+U = [0, 4, 5, 9, 10, 13, 14, 18, 19, 20, 21, 22, 23]
+A = [0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 18, 19, 23]
+N = [0, 4, 5, 6, 9, 10, 12, 13, 14, 17, 18, 19, 23]
 
 
 class Game:
@@ -31,6 +34,19 @@ class Game:
         self.indices = []
         self.faltan = list(self.numbers)
         self.faltan_J = list(map(lambda x: self.numbers[x], J))
+
+    @property
+    def puntaje(self):
+        self.letras = ''
+        if self.check_J():
+            self.letras += 'J'
+        if self.check_U():
+            self.letras += 'U'
+        if self.check_A():
+            self.letras += 'A'
+        if self.check_N():
+            self.letras += 'N'
+        return len(self.finded) + len(self.letras) * 25
 
     def check(self, numbers):
         self.finded = []
@@ -61,12 +77,30 @@ class Game:
         if len(faltan_list) > 4:
             faltan += ', +'
         if len(faltan_list) > 0:
-            return f'{nombre}: {len(self.finded)}    Faltan: {faltan}'
+            return f'{nombre}: {len(self.finded)}  Letras: {self.letras}  Faltan: {faltan}'
         else:
-            return f'{nombre}: {len(self.finded)}    GANO'
+            return f'{nombre}: {len(self.finded)}  Letras: {self.letras}  GANO'
 
     def check_J(self):
         for i in J:
+            if i not in self.indices:
+                return False
+        return True
+
+    def check_U(self):
+        for i in U:
+            if i not in self.indices:
+                return False
+        return True
+
+    def check_A(self):
+        for i in A:
+            if i not in self.indices:
+                return False
+        return True
+
+    def check_N(self):
+        for i in N:
             if i not in self.indices:
                 return False
         return True
@@ -99,14 +133,12 @@ class Screen:
         choice = random.choice(self.opciones)
         index = self.opciones.index(choice)
         self.opciones.pop(index)
-        print(os.path.join(f'{FOLDER}/100PNG/{choice}.png'))
         self.seleccionado(choice)
         imagen = pygame.image.load(os.path.join(f'{FOLDER}/100PNG/{choice}.png'))
         self.seleccionados.append(imagen)
         for g in self.games:
             g.check_number(choice)
-        print('\n\n')
-        for g in sorted(self.games, key=lambda x: len(x.finded)):
+        for g in sorted(self.games, key=lambda x: x.puntaje):
             print(g.status())
 
     def seleccionado(self, number):

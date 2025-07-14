@@ -3,7 +3,7 @@ import random
 
 from fpdf import FPDF
 
-FOLDER = 'operacion12dc'
+FOLDER = 'blippi'
 MAX_LIMIT = 90
 
 
@@ -86,39 +86,52 @@ class Game:
 
 if __name__ == '__main__':
     games = []
-    # niños = [
-        # 'Joe A.',
-        # 'Guadalupe',
-        # 'Joe H.',
-        # 'Roxana',
-        # 'Robert',
-        # 'Geraldine',
-        # 'Loana',
-        # 'Damaris',
-        # 'Esteban',
-        # 'Ronald',
-        # 'Meddly',
-        # 'Mimba',
-        # 'David',
-        # 'Josué',
-        # 'Christian',
-        # 'Carmen',
-        # 'Luis Alonso',
-        # 'Francesca',
-        # 'Santiago',
-        # 'Rosa',
-        # 'Francisco',
-        # 'Polito',
-        # 'Lupe',
-        # 'Tim',
-        # 'Camila',
-        # 'Abigail',
-        # 'Jugador 1',
-        # 'Jugador 2',
-        # 'Jugador 3',
-        # 'Jugador 4'
-    # ]
-    niños = [str(i).zfill(2) for i in range(1, 41)]
+    niños = [
+        'Polito',
+        'Lupe',
+        'Francesca',
+        'Daniel',
+        'Pamela',
+        'Yuyo',
+        'Yiya',
+        'Joe',
+        'Roxana',
+        'Robert',
+        'Geraldine',
+        'Ronald',
+        'Tim',
+        'Camila',
+        'Carmen',
+        'Christian',
+        'Luis Alonso',
+        'Juan Diego',
+        'Jenny',
+        'César',
+        'Doris',
+        'Rosa',
+        'Francisco',
+        'Andrea',
+        'Jeremy',
+        'Jonathan',
+        'Brisa',
+        'Ricardo',
+        'Giuliana',
+        'Deisy',
+        'Tía Mimba',
+        'Meddly',
+        'Juan',
+        'Esteban',
+        'Milán',
+        'Mateo',
+        'David',
+        'Josué',
+        'César',
+        'Cayetana',
+        'Damaris',
+        'Loana',
+        'Abigail',
+    ]
+    # niños = [str(i).zfill(2) for i in range(1, 41)]
 
     while len(niños):
         game = Game()
