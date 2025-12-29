@@ -7,7 +7,7 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 import pygame
 
-FOLDER = 'blippi'
+FOLDER = 'tcontur'
 
 CONFIG = configparser.ConfigParser()
 CONFIG.read(FOLDER + '/config.ini')
@@ -19,12 +19,23 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 MAX_LIMIT = 90
 
-J = [0, 1, 2, 3, 4, 7, 16, 19, 20, 21]
-U = [0, 4, 5, 9, 10, 13, 14, 18, 19, 20, 21, 22, 23]
-A = [0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 18, 19, 23]
-N = [0, 4, 5, 6, 9, 10, 12, 13, 14, 17, 18, 19, 23]
-
-
+# J = [0, 1, 2, 3, 4, 7, 17, 20, 21, 22]
+# U = [0, 4, 5, 9, 10, 13, 14, 18, 19, 20, 21, 22, 23]
+# A = [0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 18, 19, 23]
+# N = [0, 4, 5, 6, 9, 10, 12, 13, 14, 17, 18, 19, 23]
+B = [0, 1, 2, 3, 4, 5, 9, 10, 11, 13, 14, 15, 19, 20, 21, 22, 23, 24]
+I = [0, 1, 2, 3, 4, 2, 7, 17, 22, 20, 21, 22, 23, 24]
+N = [0, 4, 5, 6, 9, 10, 14, 15, 18, 19, 20, 24]
+G = [0, 1, 2, 3, 4, 5, 10, 13, 14, 15, 19, 20, 21, 22, 23, 24]
+O = [0, 1, 2, 3, 4, 5, 9, 10, 14, 15, 19, 20, 21, 22, 23, 24]
+CHECK = ['B', 'I', 'N', 'G', 'O']
+LETRAS = {
+    'B': B,
+    'I': I,
+    'N': N,
+    'G': G,
+    'O': O,
+}
 class Game:
 
     def __init__(self, gamer, numbers):
@@ -32,20 +43,15 @@ class Game:
         self.numbers = numbers
         self.finded = []
         self.indices = []
-        self.faltan = list(self.numbers)
-        self.faltan_J = list(map(lambda x: self.numbers[x], J))
+        print('numbers', numbers)
+        self.faltan = [[(numbers[idx] if idx < 12 else numbers[idx - 1]) for idx in letra ] for letra in LETRAS.values()]
 
     @property
     def puntaje(self):
         self.letras = ''
-        if self.check_J():
-            self.letras += 'J'
-        if self.check_U():
-            self.letras += 'U'
-        if self.check_A():
-            self.letras += 'A'
-        if self.check_N():
-            self.letras += 'N'
+        for letra in CHECK:
+            if self.check_letra(LETRAS[letra]):
+                self.letras += letra
         return len(self.finded) + len(self.letras) * 25
 
     def check(self, numbers):
@@ -58,10 +64,12 @@ class Game:
     def check_number(self, n):
         if n in self.numbers:
             self.finded.append(n)
-            self.faltan.remove(n)
+            # self.faltan.remove(n)
             self.indices.append(self.numbers.index(n))
-        if n in self.faltan_J:
-            self.faltan_J.remove(n)
+        for faltan_letra in self.faltan:
+            if n in self.faltan:
+                print('remove', n)
+                faltan_letra.remove(n)
         return len(self.finded)
 
     def remove_number(self, n):
@@ -81,26 +89,8 @@ class Game:
         else:
             return f'{nombre}: {len(self.finded)}  Letras: {self.letras}  GANO'
 
-    def check_J(self):
-        for i in J:
-            if i not in self.indices:
-                return False
-        return True
-
-    def check_U(self):
-        for i in U:
-            if i not in self.indices:
-                return False
-        return True
-
-    def check_A(self):
-        for i in A:
-            if i not in self.indices:
-                return False
-        return True
-
-    def check_N(self):
-        for i in N:
+    def check_letra(self, letra):
+        for i in letra:
             if i not in self.indices:
                 return False
         return True

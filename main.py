@@ -3,7 +3,7 @@ import random
 
 from fpdf import FPDF
 
-FOLDER = 'blippi'
+FOLDER = 'tcontur'
 MAX_LIMIT = 90
 
 
@@ -131,7 +131,7 @@ if __name__ == '__main__':
         'Loana',
         'Abigail',
     ]
-    # niños = [str(i).zfill(2) for i in range(1, 41)]
+    niños = [str(i).zfill(2) for i in range(1, 40)]
 
     while len(niños):
         game = Game()
